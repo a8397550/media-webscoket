@@ -1,0 +1,19 @@
+{
+  "name": "media-webscoket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a8397550/media-webscoket.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a8397550/media-webscoket/issues"
+  },
+  "homepage": "https://github.com/a8397550/media-webscoket#readme"
+}
