@@ -1,52 +1,34 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>websocket connect</title>
+</head>
+<body>
+  </video>
+  <div>
+    <input type="text" style="width: 200px;" id="url" value="127.0.0.1:8888"/>
+    <button id="capture">发起连接</button>
+  </div>
+  <script>
+    /**
  * jack 连接服务器websocket js文件
  */
 
-var websocket = '';
+var websocket = ''; // 1
 var ajaxPageNum = 1;
-var last_health;
-var health_timeout = 10;
+var last_health; // 1
+var health_timeout = 10; // 1
 var tDates = [], tData = [];
 var rightIndex;
 
-if (window.WebSocket) {
-	// 创建websocket连接  当前连接协议 ip 端口
-    websocket = new WebSocket(
-            encodeURI('ws://' + document.domain + ':8888'));
-    websocket.onopen = function() {
-        console.log('已连接');
-        // 作为标识告诉服务器
-        websocket.send("onlinejack");
-        // 心跳机制 每分钟连接服务器
-        heartbeat_timer = setInterval(function() {
-            keepalive(websocket)
-        }, 60000);
-    };
-    websocket.onerror = function() {
-        console.log('连接发生错误');
-    };
-    websocket.onclose = function() {
-        console.log('已经断开连接');
-        initWs();
-    };
-    // 消息接收 接收到服务器websocket发来的消息
-    websocket.onmessage = function(message) {
-        console.log(message)
-        console.log(message.data)
-        
-        var jsonMsg = JSON.parse(message.data);
-        console.log(jsonMsg);
-        // 业务代码
-    };
-} else {
-    alert("该浏览器不支持提醒。<br/>建议使用高版本的浏览器，<br/>如 IE10、火狐 、谷歌  、搜狗等");
-}
-
 // 上面的代码封装
-var initWs = function() {
+var initWs = function(url) {
     if (window.WebSocket) {
         websocket = new WebSocket(
-                encodeURI('ws://' + document.domain + ':8888'));
+                encodeURI('ws://' + url));
         websocket.onopen = function() {
             console.log('已连接');
             websocket.send("onlinejack");
@@ -59,7 +41,7 @@ var initWs = function() {
         };
         websocket.onclose = function() {
             console.log('已经断开连接');
-            initWs();
+            initWs(url);
         };
         // 消息接收
         websocket.onmessage = function(message) {
@@ -83,6 +65,15 @@ function keepalive(ws) {
         }
     }
 }
+
+    document.getElementById('capture').addEventListener('click', function () {
+        const urlInput = document.getElementById("url");
+        initWs(urlInput.value);
+    })
+  </script>
+</body>
+</html>
+
 
 
 

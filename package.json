@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/a8397550/media-webscoket/issues"
   },
-  "homepage": "https://github.com/a8397550/media-webscoket#readme"
+  "homepage": "https://github.com/a8397550/media-webscoket#readme",
+  "dependencies": {
+    "ws": "^7.4.5"
+  }
 }

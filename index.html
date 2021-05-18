@@ -34,6 +34,32 @@
     let video = document.getElementById('video');
     let canvas = document.getElementById('canvas');
     let context = canvas.getContext('2d');
+    
+    const socket = new WebSocket('ws://127.0.0.1:8181');
+    const peer = new RTCPeerConnection();
+
+    socket.onmessage = () => { 
+      const { type, sdp, iceCandidate } = JSON.parse(e.data);
+      if (type === 'offer_ice') {
+          peer.addIceCandidate(iceCandidate);
+      }
+    }
+    peer.ontrack = () => { // todo
+    
+    }
+    peer.onicecandidate = (e) => { // todo 
+      if (e.candidate) {
+        socket.send(JSON.stringify({
+            type: 'offer_ice',
+            iceCandidate: e.candidate
+        }));
+      } 
+    }
+
+    peer.createOffer().then(offer => {
+      peer.setLocalDescription(offer);
+      socket.send(JSON.stringify(offer));
+    });
 
     function success(stream) {
       //兼容webkit核心浏览器
@@ -44,6 +70,10 @@
       //video.src = CompatibleURL.createObjectURL(stream);
       video.srcObject = stream;
       video.play();
+
+      stream.getTracks().forEach(track => {
+        peer.addTrack(track, stream);
+      });
     }
 
     function error(error) {
